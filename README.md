@@ -12,6 +12,7 @@
 | Total Units   | 60                                                                         |
 | ECTS          | -                                                                          |
 | Type          | ILV                                                                        |
+| Previous knowledge required | C, C++, KCL, KVS, Basics of Digital Logic |
 
 > [!IMPORTANT]
 > Re-examinations take place in oral form, unless otherwise specified.
