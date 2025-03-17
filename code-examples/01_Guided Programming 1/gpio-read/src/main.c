@@ -18,24 +18,23 @@ int delay(uint32_t time){
  * @brief Main function where the program execution starts.
  */
 int main(void){   
-    uint8_t gpio_outputPin = 5;
+    uint8_t gpio_outputPin = 0;
     uint8_t gpio_inputPin = 13;
     
-    // Enable clock for GPIOA
-    RCC->AHBENR |= RCC_AHBENR_GPIOAEN;
-
     // Enable clock for GPIOC
+    RCC->AHBENR |= RCC_AHBENR_GPIOBEN;
     RCC->AHBENR |= RCC_AHBENR_GPIOCEN;
     
-    // Set GPIOA pin X as output
-    GPIOA->MODER |= GPIO_MODER_MODER0_0 << 2*gpio_outputPin;
-    // Set GPIOA pin X as push-pull output
-    GPIOA->OTYPER &= ~(GPIO_OTYPER_OT_0 << 2*gpio_outputPin);
+    // Set GPIOB pin X as output
+    // Set GPIOB pin X as push-pull output
+    GPIOB->MODER |= GPIO_MODER_MODER0_0 << 2*gpio_outputPin;
+    GPIOB->OTYPER &= ~(GPIO_OTYPER_OT_0 << 2*gpio_outputPin);
+
 
     // Set GPIOA pin X as input
     GPIOC->MODER &= ~(GPIO_MODER_MODER0_0 << 2*gpio_inputPin);
     GPIOC->MODER &= ~(GPIO_MODER_MODER0_1 << 2*gpio_inputPin);
-
+    
 
     uint8_t currentBtn = 0;
     uint8_t previousBtn = 0;
@@ -43,7 +42,7 @@ int main(void){
 
     for(;;){
 
-        if(!CHECK_BIT(GPIOC->IDR, gpio_inputPin)){
+        if(((GPIOC->IDR) & (1<<gpio_inputPin))!= 0){
             currentBtn = 1;
         }else{
             currentBtn = 0;
@@ -52,13 +51,13 @@ int main(void){
         if ((previousBtn == 0) && (currentBtn ==1)) {
 
             if(is_led_set){
-                // Set GPIOA pin X to low
-                GPIOA->BSRR |= GPIO_BSRR_BR_0 << gpio_outputPin;
+                // Set GPIOC pin X to low
+                GPIOB->BSRR |= GPIO_BSRR_BR_0 << gpio_outputPin;
                 is_led_set = 0;
                 
             }else{
-                // Set GPIOA pin X to high
-                GPIOA->BSRR |= GPIO_BSRR_BS_0 << gpio_outputPin;
+                // Set GPIOC pin X to high
+                GPIOB->BSRR |= GPIO_BSRR_BS_0 << gpio_outputPin;
                 is_led_set = 1;
             }
         }
