@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "stm32f0xx.h": "c",
+        "stdio.h": "c"
+    }
+}
