@@ -1,3 +1,20 @@
+/******************************************************************************
+ * @brief   System and Timer15 Initialization for Periodic Interrupts
+ * 
+ * This code performs the following actions:
+ * 
+ * - Configure the system clock.
+ * - Enable clock for Timer 15 (TIM15).
+ * - Set prescaler and auto-reload for desired timer frequency.
+ * - Configure TIM15 to auto-reload and generate an interrupt on overflow.
+ * - Enable update interrupt and clear interrupt flags.
+ * - Start TIM15.
+ * - Configure TIM15 to halt during debugging sessions.
+ * - Set interrupt priority and enable TIM15 IRQ in NVIC.
+ * - Globally enable interrupts.
+ * 
+ ******************************************************************************/
+
 #include "clock_.h"
 
 

@@ -1,3 +1,16 @@
+/******************************************************************************
+ * @brief  Configure system and peripherals for PWM generation using TIM3
+ *
+ * @details
+ * - System clock initialization
+ * - Enable GPIOC and TIM3 peripheral clocks
+ * - Configure GPIOC pin for alternate function (PWM output)
+ * - Set TIM3 for center-aligned PWM mode
+ * - Set prescaler and ARR for desired PWM frequency
+ * - Configure TIM3 Channel 3 in PWM Mode 1
+ * - Enable channel output and start the timer
+ ******************************************************************************/
+
 #include "main.h"
 #include "clock_.h"
 
