@@ -1,0 +1,4 @@
+{
+    "docify.commentService.docstringFormat": "Doxygen",
+    "docify.commentService.programmingLanguage": "c"
+}
