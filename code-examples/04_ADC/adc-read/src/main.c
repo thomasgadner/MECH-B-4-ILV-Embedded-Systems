@@ -34,51 +34,47 @@ void error(void){
 */
 int main(void){ 
 
-    // Enable the GPIOA and ADC clock
-    RCC->AHBENR  |= RCC_AHBENR_GPIOAEN; 
-    RCC->APB2ENR |= RCC_APB2ENR_ADCEN; 
+    const uint8_t an_shield_pos1 = 0;                      // Constant variable for analog shield position (ADC channel 8 = PB0)
 
-    // Set the GPIOA pin 0 to analog mode
-    GPIOA->MODER |= GPIO_MODER_MODER0;  
+    RCC->AHBENR  |= RCC_AHBENR_GPIOBEN;                    // Enable clock for GPIO port B
+    RCC->APB2ENR |= RCC_APB2ENR_ADCEN;                     // Enable clock for ADC1 on APB2 bus
 
-    // Set the ADC to continuous mode and select scan direction
-    ADC1->CHSELR |= ADC_CHSELR_CHSEL0 ; 
-    ADC1->CFGR1  |= ADC_CFGR1_CONT | ADC_CFGR1_SCANDIR;
-    // Set Sample time 
-    ADC1->SMPR   |= ADC_SMPR_SMP_0;
-    
+    GPIOB->MODER &= ~(0b11 << an_shield_pos1);             // Set PB0 to analog mode by setting MODER0[1:0]
 
-    // If ADC is not ready set the ADC ready bit
-    if ((ADC1->ISR & ADC_ISR_ADRDY) != 0){   
-        ADC1->ISR |= ADC_ISR_ADRDY; 
+    ADC1->CHSELR |= 0b1 << 8;                              // Select ADC channel 8 (PB0) in channel selection register
+    ADC1->CFGR1  |= 0b1 << 13;                             // Enable continuous conversion mode (CONT bit)
+    ADC1->CFGR1  |= 0b1 << 2;                              // Set scan direction (SCANDIR bit)
+
+    ADC1->SMPR   |= 0b1 << 0;                              // Set sample time 
+
+    if ((ADC1->ISR & (0b1 << 0)) != 0){                    // Check if ADC ready flag is set (bit 0 of ISR)
+        ADC1->ISR |= (0b1 << 0);                           // Clear ADC ready flag by writing 1 (write-to-clear)
     }
-    // Enable the ADC
-    ADC1->CR |= ADC_CR_ADEN; 
-    // Wait for the ADC to be ready
-    while ((ADC1->ISR & ADC_ISR_ADRDY) == 0){
-        if (timeout(TIMEOUT)){
-            error();
+
+    ADC1->CR |= 0b1 << 0;                                  // Enable ADC by setting ADEN bit in control register
+
+    while ((ADC1->ISR & (0b1 << 0)) == 0){                 // Wait until ADC is ready (ADRDY flag is set)
+        if (timeout(TIMEOUT)){                             // Check for timeout during wait
+            error();                                       // Handle timeout error
         }
     }
-    
 
-    uint32_t adc_val = 0;
-    // Start the ADC
-    ADC1->CR |= ADC_CR_ADSTART;
+    uint32_t adc_val = 0;                                  // Variable to store the ADC converted value
 
-    for(;;){
-        // Wait for the ADC to complete
-        while ((ADC1->ISR & ADC_ISR_EOC) == 0) {
-            if (timeout(TIMEOUT)){
-                error();
+    ADC1->CR |= 0b1 << 2;                                  // Start ADC conversion by setting ADSTART bit
+
+    for(;;){                                               // Infinite loop to continuously read ADC values
+        while ((ADC1->ISR & ADC_ISR_EOC) == 0) {           // Wait for End Of Conversion flag (EOC)
+            if (timeout(TIMEOUT)){                         // Check for timeout during wait
+                error();                                   // Handle timeout error
             }
         }
-        // Read the ADC value - set Breakpoint here to see the value
-        // Please note in order zo stop the compiler from optimizing the code, debug_build_flags = -O0 -g -ggdb  is set in the platformio.ini file
-        adc_val = ADC1->DR;
 
+        adc_val = ADC1->DR;                                // Read converted ADC value from data register
+                                                           // Set breakpoint here to view value in debugger
     }
 }
+
 
 
 
