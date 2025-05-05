@@ -1,4 +1,4 @@
-#include "clock_.h"
+#include "mci_clock.h"
 
 /**
   * @brief  System Clock Configuration
@@ -15,22 +15,24 @@
   */
 void EPL_SystemClock_Config(void)
 {
-
-    FLASH->ACR &= ~0b111; // Reset 
-    FLASH->ACR |=  0b001 << 0; // Include 1 Wait State
-    FLASH->ACR |=  0b1 << 4; // Enable the Prefetch Buffer
-
+    // Reset the Flash 'Access Control Register', and
+    // then set 1 wait-state and enable the prefetch buffer.
+    // (The device header files only show 1 bit for the F0
+    //  line, but the reference manual shows 3...)
+    FLASH->ACR &= ~(FLASH_ACR_LATENCY_Msk | FLASH_ACR_PRFTBE_Msk);
+    FLASH->ACR |=  (FLASH_ACR_LATENCY |
+                    FLASH_ACR_PRFTBE);
 
     // activate the internal 48 MHz clock
-    RCC->CR2 |= 0b1 << 16;;
+    RCC->CR2 |= RCC_CR2_HSI48ON;
 
     // wait for clock to become stable before continuing
-    while (!(RCC->CR2 & (0b1 << 17)));
+    while (!(RCC->CR2 & RCC_CR2_HSI48RDY))
+        ;
 
     // configure the clock switch
-    RCC->CFGR &= ~0b1111 << 4;
-    RCC->CFGR &= ~0b111 << 8;
-
+    RCC->CFGR = RCC->CFGR & ~RCC_CFGR_HPRE_Msk;
+    RCC->CFGR = RCC->CFGR & ~RCC_CFGR_PPRE_Msk;
     RCC->CFGR = (RCC->CFGR & ~RCC_CFGR_SW_Msk) | (0b11 << RCC_CFGR_SW_Pos);
 
     // wait for clock switch to become stable

@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "stm32f0xx.h": "c",
+        "mci_clock.h": "c",
+        "epl_clock.h": "c",
+        "epl_usart.h": "c"
+    }
+}

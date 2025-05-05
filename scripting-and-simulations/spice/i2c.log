@@ -1,0 +1,11 @@
+LTspice 24.0.12 for Windows
+Circuit: * H:\00_Lehre\01_Unterrichtsmaterial\03_Embedded_Systems\C-BSc-Embedded-Systems\scripting-and-simulations\spice\i2c.asc
+Start Time: Fri May  2 17:03:49 2025
+solver = Alternate
+Maximum thread count: 8
+tnom = 27
+temp = 27
+method = trap
+Direct Newton iteration for .op point succeeded.
+Total elapsed time: 0.078 seconds.
+
