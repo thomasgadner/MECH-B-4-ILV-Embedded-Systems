@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "stm32f0xx.h": "c"
+        "stm32f0xx.h": "c",
+        "mci_clock.h": "c"
     }
 }

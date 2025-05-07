@@ -1,5 +1,5 @@
 #include <stm32f0xx.h>
-#include "mci_clock.h"
+#include "clock_.h"
 #include <stdio.h>
 
 #define LOG( msg... ) printf( msg );
@@ -37,7 +37,7 @@ int _write(int handle, char* data, int size) {
 
 int main(void) {
   // Configure the system clock to 48MHz (defined in a separate function)
-  EPL_SystemClock_Config();
+  SystemClock_Config();
 
   // Define constants for the USART2 RX and TX pin numbers on GPIOA
   const uint8_t USART2_RX_PIN = 3;
