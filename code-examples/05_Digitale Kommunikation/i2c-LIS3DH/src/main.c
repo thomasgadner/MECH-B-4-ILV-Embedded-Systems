@@ -1,3 +1,25 @@
+/*******************************************************************************
+ * Final Course Example - Important Note
+ *
+ * Dear Students,
+ *
+ * As we reach the conclusion of our journey together in this course,
+ * this example does not include any direct page references to the 
+ * microcontroller's datasheet.
+ *
+ * By now, through your exercises and practice, you should have developed
+ * the confidence and ability to navigate the datasheet independently. 
+ * This is an essential skill for every embedded developer, and we trust 
+ * that your hard work has brought you to that level.
+ *
+ * Remember: the datasheet is not just a reference—it's your guidebook.
+ * Take pride in how far you’ve come, and let this be one more step toward
+ * becoming a skilled and self-reliant engineer.
+ *
+ * All the best,
+ ******************************************************************************/
+
+
 #include <stm32f091xc.h>
 #include "clock_.h"
 #include <stdio.h>
@@ -15,7 +37,7 @@
 #define PIN_SCL 8
 
 // The LIS3DH Address is a 7 bit address + 1 bit for read/write
-// The LSB of the address can be changed by setting SDO low or high (0b001100(SDO))
+// The LSB of the address can be changed by setting SDO low or high (0b001100(SDO)) -> See Page 25 of Sensor Datasheet.
 #define SDO 0
 #define LIS3DH_BASE_ADDR (0b0011000 | SDO)
 #define LIS3DH_ADDR LIS3DH_BASE_ADDR << 1
@@ -207,7 +229,7 @@ void I2C_config()
     // Set the I2C timing register - please refer to the Datasheet for more information
     I2C1->TIMINGR = (uint32_t)0x00B01A4B; // Table 95 Page 666. Calculations and the Register can be found on Page 691.
     // Enable the I2C peripheral
-    I2C1->CR1 |= (0b1 < 0); // enable the peripheral by setting the Peripheral Enable (PE) bit.
+    I2C1->CR1 |= (0b1 << 0); // enable the peripheral by setting the Peripheral Enable (PE) bit.
 }
 
 /**
@@ -243,18 +265,18 @@ int LIS3DH_Init()
  */
 void set_SDO(int state)
 {
-    uint8_t sdo_pin = 4;
+    const uint8_t sdo_pin = 4;
 
     RCC->AHBENR |= RCC_AHBENR_GPIOBEN;
-    GPIOB->MODER |= GPIO_MODER_MODER0_0 << (2 * sdo_pin);
-    GPIOB->OTYPER &= ~(GPIO_OTYPER_OT_0 << (2 * sdo_pin));
+    GPIOB->MODER |= 0b1 << (2 * sdo_pin);
+    GPIOB->OTYPER &= ~(0b1 << (2 * sdo_pin));
     if (state)
     {
-        GPIOB->BSRR |= GPIO_BSRR_BS_0 << sdo_pin;
+        GPIOB->BSRR |= (0b1) << sdo_pin;
     }
     else
     {
-        GPIOB->BSRR |= GPIO_BSRR_BR_0 << sdo_pin;
+        GPIOB->BSRR |= 0b1 << (sdo_pin+15);
     }
 }
 
@@ -296,7 +318,10 @@ int main(void)
         GZ = (int16_t)((rx_data[5] << 8) | rx_data[4]);
 
         // Send scaled data to debug UART
-        LOG("[DEBUG-LOG] AX: %.4d | AY: %.4d | AZ: %.4d\r\n", GX, GY, GZ);
+
+        LOG(">GX:%.4d\n",GX);
+        LOG(">GY:%.4d\n",GY);
+        LOG(">GZ:%.4d\n",GZ);
 
         // Wait for a short delay
         delay(APB_FREQ / 5000);
