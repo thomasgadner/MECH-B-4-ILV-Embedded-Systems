@@ -317,7 +317,7 @@ int main(void)
         GY = (int16_t)((rx_data[3] << 8) | rx_data[2]);
         GZ = (int16_t)((rx_data[5] << 8) | rx_data[4]);
 
-        // Send scaled data to debug UART
+        // Send scaled data to debug UART 
 
         LOG(">GX:%.4d\n",GX);
         LOG(">GY:%.4d\n",GY);
