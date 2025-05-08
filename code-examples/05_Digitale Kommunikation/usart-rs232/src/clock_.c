@@ -1,4 +1,4 @@
-#include "mci_clock.h"
+#include "clock_.h"
 
 /**
   * @brief  System Clock Configuration
@@ -13,7 +13,7 @@
   * @param  None
   * @retval None
   */
-void EPL_SystemClock_Config(void)
+void SystemClock_Config(void)
 {
     // Reset the Flash 'Access Control Register', and
     // then set 1 wait-state and enable the prefetch buffer.
