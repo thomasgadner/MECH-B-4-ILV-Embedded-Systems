@@ -50,7 +50,7 @@ int main(void)
 
 void USART2_IRQHandler(void)
 {
-  static uint8_t ret; // You can do some error checking
+  static int ret; // You can do some error checking
   if (USART2->ISR & USART_ISR_RXNE)
   {                                              // Check if RXNE flag is set (data received)
     uint8_t c = USART2->RDR;                     // Read received byte from RDR (this automatically clears the RXNE flag)

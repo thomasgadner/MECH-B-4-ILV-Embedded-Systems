@@ -14,9 +14,9 @@ uint8_t fifo_is_full(Fifo_t* fifo) {
     return ((fifo->head + 1) % FIFO_SIZE) == fifo->tail; // FIFO is full if incrementing head would equal tail
 }
 
-uint8_t fifo_put(Fifo_t* fifo, uint8_t data) {
+int fifo_put(Fifo_t* fifo, uint8_t data) {
     if (fifo_is_full(fifo)) {                   // Check if FIFO is full before inserting
-        return 1;                               // Insertion failed (buffer full)
+        return -1;                               // Insertion failed (buffer full)
     }
 
     fifo->buffer[fifo->head] = data;            // Store data at current head position
@@ -24,12 +24,12 @@ uint8_t fifo_put(Fifo_t* fifo, uint8_t data) {
     return 0;                                   // Insertion successful
 }
 
-uint8_t fifo_get(Fifo_t* fifo, uint8_t* data) {
+int fifo_get(Fifo_t* fifo, uint8_t* data) {
     if (fifo_is_empty(fifo)) {                  // Check if FIFO is empty before reading
-        return 2;                               // Read failed (buffer empty)
+        return -1;                               // Read failed (buffer empty)
     }
 
     *data = fifo->buffer[fifo->tail];           // Retrieve data at current tail position
     fifo->tail = (fifo->tail + 1) % FIFO_SIZE;  // Move tail forward and wrap around if needed
-    return fifo->tail;                          // Read successful Return Tail
+    return 0;                          // Read successful Return 0
 }

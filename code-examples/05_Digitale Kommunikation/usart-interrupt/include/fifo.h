@@ -1,8 +1,8 @@
 #include <stm32f0xx.h>
 
 #define FIFO_SIZE 64
-#define FIFO_FULL_ERROR 1
-#define FIFO_EMPTY_ERROR 2
+#define FIFO_ERROR -1
+
 
 
 typedef struct {
@@ -13,5 +13,5 @@ typedef struct {
 
 
 void fifo_init(Fifo_t* fifo);
-uint8_t fifo_put(Fifo_t* fifo, uint8_t data);
-uint8_t fifo_get(Fifo_t* fifo, uint8_t* data);
+int fifo_put(Fifo_t* fifo, uint8_t data);
+int fifo_get(Fifo_t* fifo, uint8_t* data);
