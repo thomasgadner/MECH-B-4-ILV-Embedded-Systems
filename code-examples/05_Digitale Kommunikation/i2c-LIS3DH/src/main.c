@@ -297,9 +297,9 @@ int main(void)
         ;
     }
 
-    int16_t GX = 0;
-    int16_t GY = 0;
-    int16_t GZ = 0;
+    int16_t AccX_raw = 0;
+    int16_t AccY_raw = 0;
+    int16_t AccZ_raw = 0;
 
     uint8_t rx_data[6];
 
@@ -312,16 +312,16 @@ int main(void)
             LIS3DH_Read(LIS3DH_ADDR, 0x28 + ro, rx_data + ro, 1);
         }
 
-        // Convert the raw data to 16-bit signed values
-        GX = (int16_t)((rx_data[1] << 8) | rx_data[0]);
-        GY = (int16_t)((rx_data[3] << 8) | rx_data[2]);
-        GZ = (int16_t)((rx_data[5] << 8) | rx_data[4]);
+        // Convert the raw data to 16-bit signed values 
+        AccX_raw = (int16_t)((rx_data[1] << 8) | rx_data[0]);
+        AccY_raw = (int16_t)((rx_data[3] << 8) | rx_data[2]);
+        AccZ_raw = (int16_t)((rx_data[5] << 8) | rx_data[4]);
 
-        // Send scaled data to debug UART 
+        // Send raw reg data via UART
 
-        LOG(">GX:%.4d\n",GX);
-        LOG(">GY:%.4d\n",GY);
-        LOG(">GZ:%.4d\n",GZ);
+        LOG(">GX:%.4d\n",AccX_raw);
+        LOG(">GY:%.4d\n",AccY_raw);
+        LOG(">GZ:%.4d\n",AccZ_raw);
 
         // Wait for a short delay
         delay(APB_FREQ / 5000);
