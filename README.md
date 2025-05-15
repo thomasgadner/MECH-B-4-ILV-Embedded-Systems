@@ -4,7 +4,7 @@
 |-----------------------------|------------------------------------------------------------------------------------------------------------------------|
 | Module Name                 | MECH-B-4-MDT-EMB-ILV                                                                                                   |
 | Semester                    | 4                                                                                                                      |
-| Assessment(s)               | Three (3) practical assessments 70%, one (1) intermediate examination 30%.                                             |
+| Assessment(s)               | Practical assessments 70%, one (1) intermediate examination 30%.                                                       |
 | SWS Total                   | 4                                                                                                                      |
 | Total Units                 | 60                                                                                                                     |
 | ECTS                        | 5                                                                                                                      |
