@@ -1,0 +1,23 @@
+project:
+  type: book
+
+book:
+  title: "embedd"
+  author: "Norah Jones"
+  date: "3.6.2025"
+  chapters:
+    - index.qmd
+    - intro.qmd
+    - summary.qmd
+    - references.qmd
+
+bibliography: references.bib
+
+format:
+  html:
+    theme: cosmo
+  pdf:
+    documentclass: scrreprt
+
+
+
